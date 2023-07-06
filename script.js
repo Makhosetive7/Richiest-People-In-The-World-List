@@ -30,6 +30,7 @@ const doubleMoney = () => {
     return { ...user, money: user.money * 2 };
   });
 
+
   updateDOM();
 };
 
@@ -37,9 +38,9 @@ const showMillionaires =()  => {
     const millionaires = data.filter(user => user.money > 1000000);
 
     if (millionaires.length === 0) {
-        alert("There are no millionaires in the data.");
+        alertify.notify("There are no millionaires in the data.");
       } else {
-        alert(`There are ${millionaires.length} millionaires in the data.`);
+        alertify.notify(`There are ${millionaires.length} millionaires in the data.`);
       }
       
   
@@ -47,12 +48,22 @@ const showMillionaires =()  => {
   }
 
 const sortMillionaires = () => {
-   data = data.sort((a, b) => {
+   const millionaires = data.sort((a, b) => {
     return b.money - a.money;
   });
+  if (millionaires.length === 0) {
+    alertify.notify("There are no millionaires in the data.");
+  } else {
+    alertify.notify("Millionaires sorted successfully!");
+  }
 
   updateDOM();
 };
+const deleteUser = (name)  => {
+  data = data.filter(user => user.name !== name);
+  updateDOM();
+}
+
 
 // Calculate the total wealth
 const calculateWealth = () => {
@@ -63,6 +74,7 @@ const calculateWealth = () => {
       wealth
     )}</strong></h3>`;
     main.appendChild(wealthEl);
+    alertify.notify(`Total Wealth: ${formatMoney(wealth)}`);
   }
   
   // Add new obj to data arr
@@ -73,19 +85,21 @@ const calculateWealth = () => {
   }
   
   // Update DOM
-  function updateDOM(providedData = data) {
-    // Clear main div
-    main.innerHTML = '<h2><strong>Person</strong> Wealth</h2>';
-  
-    providedData.forEach(item => {
-      const element = document.createElement('div');
-      element.classList.add('person');
-      element.innerHTML = `<strong>${item.name}</strong> ${formatMoney(
-        item.money
-      )}`;
-      main.appendChild(element);
-    });
-  }
+function updateDOM(providedData = data) {
+  // Clear main div
+  main.innerHTML = '<h2><strong>Person</strong> Wealth</h2>';
+
+  providedData.forEach(item => {
+    const element = document.createElement('div');
+    element.classList.add('person');
+    element.innerHTML = `
+      <strong>${item.name}</strong> ${formatMoney(item.money)}
+      <i class="material-icons delete-btn" onclick="deleteUser('${item.name}')">delete</i>
+    `;
+    main.appendChild(element);
+  });
+}
+
   
   // Format number as money - https://stackoverflow.com/questions/149055/how-to-format-numbers-as-currency-string
 const formatMoney = (number) => {
