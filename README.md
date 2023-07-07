@@ -4,7 +4,7 @@
 
 ## Project image
 
-![Drag Racing](Banner.jpeg)
+![banner](Banner.jpeg)
 
  This project is a recreation of the DOM Array Methods project from the "vanillawebprojects" repository. It aims to enhance understanding and application of high-order functions in JavaScript. In addition to the original project, I have added a delete button for each user and integrated the Notify.js library to provide notifications when certain functionalities are triggered.
  
